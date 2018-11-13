@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context=".Activities.MainActivity">
+
+    <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true" app:srcCompat="@drawable/thought_icon"
+            android:id="@+id/fabAdd" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="24dp" android:layout_marginRight="24dp" android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/mainFunnyBtn" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/mainSeriousBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/category_toggle"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp" android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp" android:layout_marginTop="24dp" android:textOff="Funny"
+            android:textOn="Funny" android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:onClick="mainFunnyClicked" android:checked="true"/>
+    <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/mainSeriousBtn"
+            app:layout_constraintStart_toEndOf="@+id/mainFunnyBtn" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/mainCrazyBtn" app:layout_constraintTop_toTopOf="@+id/mainFunnyBtn"
+            app:layout_constraintBottom_toBottomOf="@+id/mainFunnyBtn" android:background="@drawable/category_toggle"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_default" android:onClick="mainSeriousClicked"
+            android:textOff="Serious" android:textOn="Serious"/>
+    <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/mainCrazyBtn"
+            app:layout_constraintStart_toEndOf="@+id/mainSeriousBtn" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/mainPopularBtn"
+            app:layout_constraintTop_toTopOf="@+id/mainSeriousBtn"
+            app:layout_constraintBottom_toBottomOf="@+id/mainSeriousBtn" android:background="@drawable/category_toggle"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp" android:textOff="Crazy"
+            android:textOn="Crazy" android:layout_marginBottom="1dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_default" android:onClick="mainCrazyClicked"/>
+    <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/mainPopularBtn"
+            app:layout_constraintStart_toEndOf="@+id/mainCrazyBtn" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@+id/mainCrazyBtn"
+            app:layout_constraintBottom_toBottomOf="@+id/mainCrazyBtn" android:background="@drawable/category_toggle"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp" android:textOff="Popular"
+            android:textOn="Popular" android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:onClick="mainPopularClicked"/>
+    <android.support.v7.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/thoughtListView" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/mainFunnyBtn" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

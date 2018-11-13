@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Activities.AddThoughtActivity">
+
+    <ToggleButton
+            android:text="ToggleButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/addFunnyBtn" android:textOff="Funny"
+            android:textOn="Funny" android:onClick="addFunnyClicked"
+            android:textColor="@android:color/background_light"
+            app:layout_constraintEnd_toStartOf="@+id/addSeriousBtn"
+            android:layout_marginTop="15dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:background="@drawable/category_toggle"
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp"/>
+    <ToggleButton
+            android:text="ToggleButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/addSeriousBtn" android:textOff="Serious"
+            android:textOn="Serious" android:onClick="addSeriousClicked"
+            android:textColor="@android:color/background_light" app:layout_constraintStart_toEndOf="@+id/addFunnyBtn"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/addCrazyBtn"
+            app:layout_constraintTop_toTopOf="@+id/addFunnyBtn"
+            app:layout_constraintBottom_toBottomOf="@+id/addFunnyBtn" android:background="@drawable/category_toggle"
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"/>
+    <ToggleButton
+            android:text="ToggleButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/addCrazyBtn" android:textOff="Crazy"
+            android:textOn="Crazy" android:onClick="addCrazyClicked"
+            android:textColor="@android:color/background_light" app:layout_constraintStart_toEndOf="@+id/addSeriousBtn"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/addSeriousBtn"
+            app:layout_constraintBottom_toBottomOf="@+id/addSeriousBtn" android:background="@drawable/category_toggle"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp"/>
+    <EditText
+            android:layout_width="0dp"
+            android:layout_height="98dp"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/addThoughtTxt"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="16dp"
+            android:hint="My random Thought" app:layout_constraintHorizontal_bias="0.0"
+            android:gravity="top" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/addSeriousBtn"/>
+    <Button
+            android:text="Post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addPostBtn" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/addThoughtTxt" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="3dp" android:layout_marginRight="3dp" android:background="@color/colorAccent"
+            android:textColor="@color/common_google_signin_btn_text_dark_default" android:onClick="addPostClicked"/>
+</android.support.constraint.ConstraintLayout>
