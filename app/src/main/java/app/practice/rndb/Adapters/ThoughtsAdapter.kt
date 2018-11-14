@@ -11,11 +11,17 @@ import app.practice.rndb.Model.Thought
 import app.practice.rndb.R
 import app.practice.rndb.Utilities.NUM_LIKES
 import app.practice.rndb.Utilities.THOUGHTS_REF
+import app.practice.rndb.interfaces.ThoughtOptionsClickListener
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ThoughtsAdapter(val thoughts: ArrayList<Thought>, val itemClick: (Thought) -> Unit) :
+class ThoughtsAdapter(
+    val thoughts: ArrayList<Thought>,
+    val listener: ThoughtOptionsClickListener, val
+    itemClick: (Thought) -> Unit
+) :
     RecyclerView.Adapter<ThoughtsAdapter.ViewHolder>() {
 
 
@@ -42,8 +48,11 @@ class ThoughtsAdapter(val thoughts: ArrayList<Thought>, val itemClick: (Thought)
         val likesImage = itemView?.findViewById<ImageView>(R.id.listviewLikeImg);
         val listviewDeleteBtn = itemView?.findViewById<Button>(R.id.listviewDeleteBtn);
         val numComments = itemView?.findViewById<TextView>(R.id.listviewNumCommentTxt);
+        val optionsImage = itemView?.findViewById<ImageView>(R.id.thoughtOptionsImage);
 
         fun bindThought(thought: Thought) {
+
+            optionsImage.visibility = View.INVISIBLE;
             username?.text = thought.username;
             thoughtTxt?.text = thought.thoughtTxt;
             numLikes?.text = thought.numLikes.toString() + " , ${thought.category}";
@@ -66,6 +75,15 @@ class ThoughtsAdapter(val thoughts: ArrayList<Thought>, val itemClick: (Thought)
 
             itemView?.setOnClickListener {
                 itemClick(thought);
+            }
+
+
+            if (FirebaseAuth.getInstance().currentUser?.uid == thought.userId) {
+                optionsImage.visibility = View.VISIBLE;
+
+                optionsImage.setOnClickListener {
+                    listener.thoughtOptionsMenuClicked(thought);
+                }
             }
 
         }

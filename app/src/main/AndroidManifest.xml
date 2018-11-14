@@ -24,6 +24,8 @@
         </activity>
         <activity android:name=".Activities.CommentsActivity">
         </activity>
+        <activity android:name=".Activities.UpdateCommentActivity">
+        </activity>
     </application>
 
 </manifest>

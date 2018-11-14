@@ -2,27 +2,28 @@ package app.practice.rndb.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import app.practice.rndb.Adapters.ThoughtsAdapter
 import app.practice.rndb.Model.Thought
 import app.practice.rndb.R
 import app.practice.rndb.Utilities.*
+import app.practice.rndb.interfaces.ThoughtOptionsClickListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ThoughtOptionsClickListener {
+
     var db: FirebaseFirestore? = null;
     lateinit var thoughtsAdapter: ThoughtsAdapter;
     val thoughts = arrayListOf<Thought>();
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent);
         }
 
-        thoughtsAdapter = ThoughtsAdapter(thoughts) { thought ->
+        thoughtsAdapter = ThoughtsAdapter(thoughts, this) { thought ->
 
             val commentIntent = Intent(this@MainActivity, CommentsActivity::class.java);
             commentIntent.putExtra(DOCUMENT_KEY, thought.documentId);
@@ -200,6 +201,11 @@ class MainActivity : AppCompatActivity() {
                 val numComments = data[NUM_COMMENTS] as Long;
                 val documentId = document.id;
                 val category = document[CATEGORY] as String;
+                var userId = "";
+                data[USER_ID]?.let {
+                    userId = it as String;
+                }
+//                val userId = data[USER_ID] as String
 
                 val newThought =
                     Thought(
@@ -209,7 +215,8 @@ class MainActivity : AppCompatActivity() {
                         numLikes.toInt(),
                         numComments.toInt(),
                         category,
-                        documentId
+                        documentId,
+                        userId
                     );
                 thoughts.add(newThought);
 
@@ -274,5 +281,65 @@ class MainActivity : AppCompatActivity() {
         thoughtsListener.remove();
         setListener()
     }
+
+    override fun thoughtOptionsMenuClicked(thought: Thought) {
+//        Toast.makeText(this,"show toast",Toast.LENGTH_LONG).show();
+
+        val builder = AlertDialog.Builder(this);
+        val dialogView = layoutInflater.inflate(R.layout.options_menu, null);
+        val deleteBtn = dialogView.findViewById<Button>(R.id.optionDeleteBtn);
+        val editBtn = dialogView.findViewById<Button>(R.id.optionEditBtn);
+
+
+        builder.setView(dialogView)
+            .setNegativeButton("Cancel") { dialogInterface, i -> }
+
+        val ad = builder.show();
+
+        deleteBtn.setOnClickListener { view ->
+            val thoughtRef = FirebaseFirestore.getInstance().collection(THOUGHTS_REF)
+                .document(thought.documentId)
+
+            val collectionRef = FirebaseFirestore.getInstance().collection(THOUGHTS_REF)
+                .document(thought.documentId).collection(COMMENTS_REF)
+
+            deleteCollection(collectionRef, thought) { success ->
+                if (success) {
+                    thoughtRef.delete()
+                        .addOnSuccessListener {
+                            ad.dismiss();
+                        }
+                        .addOnFailureListener { }
+                }
+            }
+        }
+
+        editBtn.setOnClickListener { view ->
+
+        }
+    }
+
+    fun deleteCollection(collection: CollectionReference, thought: Thought, complete: (Boolean) -> Unit) {
+        collection.get().addOnSuccessListener { snapshot ->
+
+            val batch = FirebaseFirestore.getInstance().batch();
+            for (document in snapshot) {
+                val docRef = FirebaseFirestore.getInstance().collection(THOUGHTS_REF)
+                    .document(thought.documentId)
+                    .collection(COMMENTS_REF)
+                    .document(document.id)
+                batch.delete(docRef)
+            }
+            batch.commit()
+                .addOnSuccessListener {
+                    complete(true);
+                }.addOnFailureListener {
+                    complete(false);
+                };
+        }.addOnFailureListener {
+            complete(false);
+        }
+    }
+
 
 }

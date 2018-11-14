@@ -65,6 +65,7 @@ class AddThoughtActivity : AppCompatActivity() {
         data.put(THOUGHT_TXT, addThoughtTxt.text.toString());
         data.put(TIMESTAMTP, FieldValue.serverTimestamp());
         data.put(USERNAME, FirebaseAuth.getInstance().currentUser?.displayName.toString());
+        data.put(USER_ID, FirebaseAuth.getInstance().currentUser?.uid.toString())
 
         FirebaseFirestore.getInstance().collection(THOUGHTS_REF)
             .add(data)

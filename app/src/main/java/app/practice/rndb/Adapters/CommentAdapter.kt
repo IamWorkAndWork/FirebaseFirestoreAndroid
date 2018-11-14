@@ -4,13 +4,20 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import app.practice.rndb.Model.Comment
 import app.practice.rndb.R
+import app.practice.rndb.interfaces.CommentOptionsClickListener
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CommentAdapter(val comments: ArrayList<Comment>, val itemClick: (Comment) -> Unit) :
+class CommentAdapter(
+    val comments: ArrayList<Comment>,
+    val listener: CommentOptionsClickListener,
+    val itemClick: (Comment) -> Unit
+) :
     RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
 
@@ -33,14 +40,23 @@ class CommentAdapter(val comments: ArrayList<Comment>, val itemClick: (Comment) 
         val username = itemView?.findViewById<TextView>(R.id.commentListUsernameTxt);
         val timestamp = itemView?.findViewById<TextView>(R.id.commentListTimestampTxt);
         val commentTxt = itemView?.findViewById<TextView>(R.id.commentListCommentTxt);
+        val optionsImage = itemView?.findViewById<ImageView>(R.id.commentOptionsImage);
 
         fun bindThought(comment: Comment) {
+            optionsImage.visibility = View.INVISIBLE;
             username?.text = comment.username;
             commentTxt?.text = comment.commentTxt;
 
             val dateFormat = SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.getDefault());
             timestamp?.text = dateFormat.format(comment.timeStamp);
 
+            if (FirebaseAuth.getInstance().currentUser?.uid == comment.userId) {
+                optionsImage?.visibility = View.VISIBLE
+            }
+
+            optionsImage.setOnClickListener {
+                listener.optionsMenuClicked(comment);
+            }
         }
 
     }
